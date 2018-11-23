@@ -1,12 +1,14 @@
 package com.github.sourcefranke.fizzbuzz;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.io.PrintStream;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -26,19 +28,12 @@ public class PrintStreamConsumerTest {
 		consumer = new PrintStreamConsumer(printStream);
 	}
 	
-	@Test
-	public void accept_test() {
-		consumer.accept("test");
+	@ParameterizedTest(name = "printed \"{0}\"")
+	@CsvSource({"test", "yeah"})
+	public void accept(String string) {
+		consumer.accept(string);
 		
-		verify(printStream).println("test");
-		verifyNoMoreInteractions(printStream);
-	}
-	
-	@Test
-	public void accept_yeah() {
-		consumer.accept("yeah");
-		
-		verify(printStream).println("yeah");
+		verify(printStream).println(string);
 		verifyNoMoreInteractions(printStream);
 	}
 }
