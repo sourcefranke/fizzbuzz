@@ -60,11 +60,10 @@ public class FizzBuzz implements Function<Integer, String> {
 	 * Removes an existing pair of modulos and the related text replacements
 	 * 
 	 * @param modulo number and its multiples to be replaced
-	 * @param string text that will be shown instead of the given number and its multiples
 	 * @return {@link FizzBuzz} object with modified set of numbers to be replaced together with its multiples
 	 */
-	public FizzBuzz remove(Integer key) {
-		replacementsMap.remove(key);
+	public FizzBuzz remove(Integer modulo) {
+		replacementsMap.remove(modulo);
 		return this;
 	}
 
