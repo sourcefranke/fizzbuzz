@@ -2,10 +2,9 @@ package com.github.sourcefranke.fizzbuzz;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FizzBuzz implements Function<Integer, String> {
 	
@@ -27,20 +26,14 @@ public class FizzBuzz implements Function<Integer, String> {
 
 	@Override
 	public String apply(Integer number) {
-		Supplier<Stream<Integer>> streamSupplier = 
-				() -> replacementsMap
-						.keySet()
-						.stream()
-						.filter(key -> number % key == 0);
-		
-		if(streamSupplier.get().count() > 0) {
-			return streamSupplier.get()
-					.map(key -> replacementsMap.get(key))
-					.collect(Collectors.joining());
-		}
-		else {
-			return number.toString();
-		}
+		return Optional.of(
+				replacementsMap.keySet().stream()
+				.filter(key -> number % key == 0)
+				.map(key -> replacementsMap.get(key))
+				.collect(Collectors.joining())
+			)
+			.map(x -> !x.isEmpty() ? x : number.toString())
+			.get();
 	}
 
 	public static FizzBuzz defaultSetup() {
