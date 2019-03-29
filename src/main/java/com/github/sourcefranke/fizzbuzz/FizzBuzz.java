@@ -44,7 +44,7 @@ public class FizzBuzz {
 				replacementsMap.keySet().stream()
 				.map(ConditionalFunction.<Integer, String>
 					ifExpr(key -> number % key == 0)
-					.thenFunc(key -> replacementsMap.get(key))
+					.thenFunc(replacementsMap::get)
 				)
 				.map(opt -> opt.orElse(""))
 				.collect(Collectors.joining())
