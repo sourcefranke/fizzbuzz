@@ -2,14 +2,11 @@ package com.github.sourcefranke.fizzbuzz;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.intThat;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -53,9 +50,7 @@ public class FizzBuzzTest {
 		FizzBuzz fizzBuzz = Mockito.spy(FizzBuzz.class);
 		
 		when(fizzBuzz.replaceNumber(any(Integer.class))).thenReturn("number");
-		when(fizzBuzz.replaceNumber(
-			intThat(Matchers.isIn(Arrays.asList(3, 6, 9)))
-		)).thenReturn("ok");
+		when(fizzBuzz.replaceNumber(3)).thenReturn("ok");
 		
 		List<String> result = fizzBuzz.toStream(10).collect(Collectors.toList());
 
@@ -66,10 +61,10 @@ public class FizzBuzzTest {
 		assertEquals("ok", result.get(2));
 		assertEquals("number", result.get(3));
 		assertEquals("number", result.get(4));
-		assertEquals("ok", result.get(5));
+		assertEquals("number", result.get(5));
 		assertEquals("number", result.get(6));
 		assertEquals("number", result.get(7));
-		assertEquals("ok", result.get(8));
+		assertEquals("number", result.get(8));
 		assertEquals("number", result.get(9));
 	}
 }

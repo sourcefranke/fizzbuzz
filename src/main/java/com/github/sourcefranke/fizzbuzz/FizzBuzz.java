@@ -6,8 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.github.sourcefranke.functionutils.ConditionalFunction;
-
 /**
  * Implementation of the FizzBuzz kata
  * 
@@ -42,11 +40,8 @@ public class FizzBuzz {
 	public String replaceNumber(Integer number) {
 		return Optional.of(
 				replacementsMap.keySet().stream()
-				.map(ConditionalFunction.<Integer, String>
-					ifExpr(key -> number % key == 0)
-					.thenFunc(replacementsMap::get)
-				)
-				.map(opt -> opt.orElse(""))
+				.filter(modulo -> number % modulo == 0)
+				.map(replacementsMap::get)
 				.collect(Collectors.joining())
 			)
 			.filter(string -> !string.isEmpty())

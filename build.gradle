@@ -10,17 +10,11 @@ repositories {
 }
 
 dependencies {
-
-	implementation (
-		project(':function-utils')
-	)
-
 	testImplementation (
 		'org.junit.jupiter:junit-jupiter-api:5.3.+',
 		'org.junit.jupiter:junit-jupiter-params:5.3.+',
 		'org.junit.jupiter:junit-jupiter-engine:5.3.+',
-		'org.mockito:mockito-all:1.10.+',
-		'org.hamcrest:hamcrest-all:1.+'
+		'org.mockito:mockito-all:1.10.+'
 	)
 }
 
