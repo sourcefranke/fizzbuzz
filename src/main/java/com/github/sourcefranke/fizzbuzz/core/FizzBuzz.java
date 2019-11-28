@@ -1,4 +1,4 @@
-package com.github.sourcefranke.fizzbuzz;
+package com.github.sourcefranke.fizzbuzz.core;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class FizzBuzz {
 	}
 
 	/**
-	 * Adds a new pair of modulos and the related text replacements
+	 * Adds a new pair of modulo and its related text replacements
 	 * 
 	 * @param modulo number and its multiples to be replaced
 	 * @param string text that will be shown instead of the given number and its multiples
@@ -28,6 +28,17 @@ public class FizzBuzz {
 	 */
 	public FizzBuzz add(Integer modulo, String string) {
 		replacementsMap.put(modulo, string);
+		return this;
+	}
+
+	/**
+	 * Removes an existing pair of modulo and its related text replacements
+	 * 
+	 * @param modulo number and its multiples to be replaced
+	 * @return {@link FizzBuzz} object with modified set of numbers to be replaced together with its multiples
+	 */
+	public FizzBuzz remove(Integer modulo) {
+		replacementsMap.remove(modulo);
 		return this;
 	}
 
@@ -65,8 +76,6 @@ public class FizzBuzz {
 		new FizzBuzz()
 			.add(3, "Fizz")
 			.add(5, "Buzz")
-			.add(4, "Foo")
-			.add(7, "Bar")
 			.toStream(100)
 			.forEach(System.out::println);
 	}
