@@ -56,11 +56,11 @@ public class FizzBuzzTest {
 	}
 	
 	@Test
-	public void testToStream() {
+	public void testStream() {
 		when(fizzBuzz.replaceNumber(any(Integer.class))).thenReturn("number");
 		when(fizzBuzz.replaceNumber(7)).thenReturn("ok");
 		
-		List<String> result = fizzBuzz.toStream(10).collect(Collectors.toList());
+		List<String> result = fizzBuzz.stream(10).collect(Collectors.toList());
 
 		assertThat(result)
 			.hasSize(10)
@@ -72,6 +72,29 @@ public class FizzBuzzTest {
 				"number",
 				"number",
 				"ok",
+				"number",
+				"number",
+				"number"
+			);
+	}
+	
+	@Test
+	public void testStream2() {
+		when(fizzBuzz.replaceNumber(any(Integer.class))).thenReturn("number");
+		when(fizzBuzz.replaceNumber(7)).thenReturn("ok");
+		
+		List<String> result = fizzBuzz.stream(3, 12).collect(Collectors.toList());
+
+		assertThat(result)
+			.hasSize(10)
+			.containsExactly(
+				"number",
+				"number",
+				"number",
+				"number",
+				"ok",
+				"number",
+				"number",
 				"number",
 				"number",
 				"number"

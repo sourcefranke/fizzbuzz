@@ -6,12 +6,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Implementation of the FizzBuzz kata
  * 
  * @author sourcefranke
  */
 public class FizzBuzz {
+	
+	private static final Logger LOGGER = LogManager.getLogger();
 	
 	private Map<Integer, String> replacementsMap;
 	
@@ -28,6 +33,7 @@ public class FizzBuzz {
 	 */
 	public FizzBuzz add(Integer modulo, String string) {
 		replacementsMap.put(modulo, string);
+		LOGGER.info("Added modulo {} with string replacement '{}'", modulo, string);
 		return this;
 	}
 
@@ -39,6 +45,7 @@ public class FizzBuzz {
 	 */
 	public FizzBuzz remove(Integer modulo) {
 		replacementsMap.remove(modulo);
+		LOGGER.info("Removed modulo {}", modulo);
 		return this;
 	}
 
@@ -49,14 +56,18 @@ public class FizzBuzz {
 	 * @return either the replacement text defined for the given number before or the number itself as a string
 	 */
 	public String replaceNumber(Integer number) {
-		return Optional.of(
-				replacementsMap.keySet().stream()
-				.filter(modulo -> number % modulo == 0)
-				.map(replacementsMap::get)
-				.collect(Collectors.joining())
-			)
-			.filter(string -> !string.isEmpty())
-			.orElseGet(number::toString);
+		String result =
+				Optional.of(
+					replacementsMap.keySet().stream()
+					.filter(modulo -> number % modulo == 0)
+					.map(replacementsMap::get)
+					.collect(Collectors.joining())
+				)
+				.filter(string -> !string.isEmpty())
+				.orElseGet(number::toString);
+		
+		LOGGER.debug("Replaced {} with '{}'", number, result);
+		return result;
 	}
 	
 	/**
@@ -65,10 +76,26 @@ public class FizzBuzz {
 	 * @param max maximum number, to that the stream should be filled
 	 * @return stream of fizzbuzzed numbers
 	 */
-	public Stream<String> toStream(Integer max) {
+	public Stream<String> stream(Integer max) {
+		LOGGER.debug("Stream to {}", max);
 		return Stream
-				.iterate(1, x -> ++x)
+				.iterate(1, x -> x + 1)
 				.limit(max)
+				.map(this::replaceNumber);
+	}
+	
+	/**
+	 * Returns a {@link Stream} of "fizzbuzzed" numbers
+	 * 
+	 * @param min minimum number, from that the stream should be filled (included)
+	 * @param max maximum number, to that the stream should be filled (included)
+	 * @return stream of fizzbuzzed numbers
+	 */
+	public Stream<String> stream(Integer min, Integer max) {
+		LOGGER.debug("Stream from {} to {}", min, max);
+		return Stream
+				.iterate(min, x -> x + 1)
+				.limit(max - min + 1)
 				.map(this::replaceNumber);
 	}
 	
@@ -76,7 +103,7 @@ public class FizzBuzz {
 		new FizzBuzz()
 			.add(3, "Fizz")
 			.add(5, "Buzz")
-			.toStream(100)
-			.forEach(System.out::println);
+			.stream(100)
+			.collect(Collectors.toList());
 	}
 }
