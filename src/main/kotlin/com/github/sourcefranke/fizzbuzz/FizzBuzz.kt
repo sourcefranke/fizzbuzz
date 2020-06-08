@@ -1,33 +1,38 @@
 package com.github.sourcefranke.fizzbuzz
 
-fun fizzBuzzNumber (
+fun convertFizzBuzzNumber (
         number: Int,
-        wordsMap: Map<Int, (Int) -> String> = mapOf(3 to ::fizz, 5 to ::buzz),
-        default: (Int) -> String = ::numberToString
+        mapping: Map<Int, (Int) -> String> = mapOf(3 to ::fizzFunc, 5 to ::buzzFunc),
+        filterFunction: (Int, Int) -> Boolean = ::moduloFunc,
+        defaultFunction: (Int) -> String = ::numberToStringFunc
 ) =
-        wordsMap.keys
-                .filter { modulo -> number % modulo == 0 }
-                .map { modulo -> wordsMap[modulo] }
-                .map { u -> u?.invoke(number) }
+        mapping.keys.asSequence()
+                .filter { key -> filterFunction(number, key) }
+                .map { key -> mapping[key] }
+                .map { func -> func?.invoke(number) }
                 .filter { it!!.isNotEmpty() }
                 .joinToString ( separator = "" )
-                .ifEmpty { default(number) }
+                .ifEmpty { defaultFunction(number) }
 
-fun fizzBuzzList (
+fun convertFizzBuzzList (
         numberList: List<Int>,
-        wordsMap: Map<Int, (Int) -> String> = mapOf(3 to ::fizz, 5 to ::buzz),
-        default: (Int) -> String = ::numberToString
+        mapping: Map<Int, (Int) -> String> = mapOf(3 to ::fizzFunc, 5 to ::buzzFunc),
+        filterFunction: (Int, Int) -> Boolean = ::moduloFunc,
+        defaultFunction: (Int) -> String = ::numberToStringFunc
 ) =
-        numberList.map { number -> fizzBuzzNumber(number, wordsMap, default) }
+        numberList.map { number -> convertFizzBuzzNumber(number, mapping, filterFunction, defaultFunction) }
 
 
 // Helper functions for replacing numbers by text
 
-fun numberToString (number: Int) = number.toString()
+fun moduloFunc (number: Int, modulo: Int): Boolean = number % modulo == 0
+fun equalFunc (number: Int, key: Int): Boolean = number == key
+
+fun numberToStringFunc (number: Int): String = number.toString()
 @Suppress("UNUSED_PARAMETER")
-fun fizz (number: Int) = "Fizz"
+fun fizzFunc (number: Int): String = "Fizz"
 @Suppress("UNUSED_PARAMETER")
-fun buzz (number: Int) = "Buzz"
+fun buzzFunc (number: Int): String = "Buzz"
 
 fun repeatNumber (number: Int): String {
     var result = ""
