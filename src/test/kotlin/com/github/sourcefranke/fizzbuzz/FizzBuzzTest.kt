@@ -117,7 +117,15 @@ class FizzBuzzTest {
     }
 }
 
+fun equalFunc (number: Int, key: Int): Boolean = number == key
+
 @Suppress("UNUSED_PARAMETER")
 fun seven (number: Int): String = "Seven"
 @Suppress("UNUSED_PARAMETER")
 fun eight (number: Int): String = "Eight"
+
+fun repeatNumber (number: Int): String {
+    var result = ""
+    repeat(number) { result += number }
+    return result
+}

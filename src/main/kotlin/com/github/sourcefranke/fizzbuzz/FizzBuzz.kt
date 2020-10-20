@@ -26,16 +26,9 @@ fun convertFizzBuzzList (
 // Helper functions for replacing numbers by text
 
 fun moduloFunc (number: Int, modulo: Int): Boolean = number % modulo == 0
-fun equalFunc (number: Int, key: Int): Boolean = number == key
 
 fun numberToStringFunc (number: Int): String = number.toString()
 @Suppress("UNUSED_PARAMETER")
 fun fizzFunc (number: Int): String = "Fizz"
 @Suppress("UNUSED_PARAMETER")
 fun buzzFunc (number: Int): String = "Buzz"
-
-fun repeatNumber (number: Int): String {
-    var result = ""
-    repeat(number) { result += number }
-    return result
-}
