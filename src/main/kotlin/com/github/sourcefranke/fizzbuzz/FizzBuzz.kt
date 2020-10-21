@@ -1,34 +1,29 @@
 package com.github.sourcefranke.fizzbuzz
 
-fun convertFizzBuzzNumber (
+val defaultMapping = mapOf(3 to "Fizz", 5 to "Buzz")
+
+/**
+ * Converts a number into its string representation
+ * @param number integer to be converted
+ * @param mapping moduli mapped to their string terms
+ */
+fun fizzBuzzNumber (
         number: Int,
-        mapping: Map<Int, (Int) -> String> = mapOf(3 to ::fizzFunc, 5 to ::buzzFunc),
-        filterFunction: (Int, Int) -> Boolean = ::moduloFunc,
-        defaultFunction: (Int) -> String = ::numberToStringFunc
+        mapping: Map<Int, String> = defaultMapping
 ) =
         mapping.keys.asSequence()
-                .filter { key -> filterFunction(number, key) }
+                .filter { key -> number % key == 0 }
                 .map { key -> mapping[key] }
-                .map { func -> func?.invoke(number) }
-                .filter { it!!.isNotEmpty() }
                 .joinToString ( separator = "" )
-                .ifEmpty { defaultFunction(number) }
+                .ifEmpty { number.toString() }
 
-fun convertFizzBuzzList (
-        numberList: List<Int>,
-        mapping: Map<Int, (Int) -> String> = mapOf(3 to ::fizzFunc, 5 to ::buzzFunc),
-        filterFunction: (Int, Int) -> Boolean = ::moduloFunc,
-        defaultFunction: (Int) -> String = ::numberToStringFunc
+/**
+ * Converts a list of numbers into their string representations
+ * @param numbers list of integers to be converted
+ * @param mapping moduli mapped to their string terms
+ */
+fun fizzBuzzList (
+        numbers: List<Int>,
+        mapping: Map<Int, String> = defaultMapping
 ) =
-        numberList.map { number -> convertFizzBuzzNumber(number, mapping, filterFunction, defaultFunction) }
-
-
-// Helper functions for replacing numbers by text
-
-fun moduloFunc (number: Int, modulo: Int): Boolean = number % modulo == 0
-
-fun numberToStringFunc (number: Int): String = number.toString()
-@Suppress("UNUSED_PARAMETER")
-fun fizzFunc (number: Int): String = "Fizz"
-@Suppress("UNUSED_PARAMETER")
-fun buzzFunc (number: Int): String = "Buzz"
+        numbers.map { number -> fizzBuzzNumber(number, mapping) }
