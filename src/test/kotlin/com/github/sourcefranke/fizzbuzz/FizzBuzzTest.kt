@@ -7,7 +7,7 @@ import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 
 class FizzBuzzTest : ShouldSpec({
-    context("fizzBuzzNumber") {
+    context("fizzBuzz") {
         listOf(
                 1 to "1",
                 2 to "2",
@@ -26,14 +26,16 @@ class FizzBuzzTest : ShouldSpec({
                 15 to "FizzBuzz",
                 16 to "16"
         ).forEach {(input, result) ->
-            fizzBuzzNumber(input) shouldBe result
+            fizzBuzz(input) shouldBe result
         }
     }
 
     context("fizzBuzzList") {
-        val inputList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+        val numbers =
+                listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+                .map { fizzBuzz(it) }
 
-        assertThat(fizzBuzzList(inputList)).all {
+        assertThat(numbers).all {
             hasSize(16)
             containsAll("1", "2", "4", "7", "8", "11", "13", "14", "16", "Fizz", "Buzz", "FizzBuzz")
             doesNotContain("3")

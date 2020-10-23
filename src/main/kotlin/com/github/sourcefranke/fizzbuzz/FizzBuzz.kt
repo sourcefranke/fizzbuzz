@@ -1,29 +1,23 @@
 package com.github.sourcefranke.fizzbuzz
 
-val defaultMapping = mapOf(3 to "Fizz", 5 to "Buzz")
+typealias Converter = (Int) -> String
+typealias ConverterMap = Map<Int, Converter>
 
 /**
- * Converts a number into its string representation
+ * Converts a number into its string version
  * @param number integer to be converted
- * @param mapping moduli mapped to their string terms
+ * @param mapping moduli mapped to related converters
+ * @param default behavior to be executed, if no modulo suited
+ * @return string version of given number
  */
-fun fizzBuzzNumber (
+fun fizzBuzz (
         number: Int,
-        mapping: Map<Int, String> = defaultMapping
+        mapping: ConverterMap = mapOf(3 to { "Fizz" }, 5 to { "Buzz" }),
+        default: Converter = { x -> x.toString() }
 ) =
         mapping.keys.asSequence()
-                .filter { key -> number % key == 0 }
-                .map { key -> mapping[key] }
+                .filter { number % it == 0 }
+                .map { mapping[it] }
+                .map { it!!.invoke(number) }
                 .joinToString ( separator = "" )
-                .ifEmpty { number.toString() }
-
-/**
- * Converts a list of numbers into their string representations
- * @param numbers list of integers to be converted
- * @param mapping moduli mapped to their string terms
- */
-fun fizzBuzzList (
-        numbers: List<Int>,
-        mapping: Map<Int, String> = defaultMapping
-) =
-        numbers.map { number -> fizzBuzzNumber(number, mapping) }
+                .ifEmpty { default.invoke(number) }
