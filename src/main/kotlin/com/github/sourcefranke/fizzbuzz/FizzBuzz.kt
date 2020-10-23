@@ -13,7 +13,7 @@ typealias ConverterMap = Map<Int, Converter>
 fun fizzBuzz (
         number: Int,
         mapping: ConverterMap = mapOf(3 to { "Fizz" }, 5 to { "Buzz" }),
-        default: Converter = { x -> x.toString() }
+        default: Converter = { it.toString() }
 ) =
         mapping.keys.asSequence()
                 .filter { number % it == 0 }
