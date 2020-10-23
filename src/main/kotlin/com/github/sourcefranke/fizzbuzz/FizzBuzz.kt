@@ -18,6 +18,6 @@ fun fizzBuzz (
         mapping.keys.asSequence()
                 .filter { number % it == 0 }
                 .map { mapping[it] }
-                .map { it!!.invoke(number) }
+                .map { it!!(number) }
                 .joinToString ( separator = "" )
-                .ifEmpty { default.invoke(number) }
+                .ifEmpty { default(number) }
